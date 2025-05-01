@@ -9,12 +9,12 @@ namespace CarCareTracker.Logic
     {
         VehicleRecords GetVehicleRecords(int vehicleId);
         decimal GetVehicleTotalCost(VehicleRecords vehicleRecords);
-        int GetMaxMileage(int vehicleId);
-        int GetMaxMileage(VehicleRecords vehicleRecords);
-        int GetMinMileage(int vehicleId);
-        int GetMinMileage(VehicleRecords vehicleRecords);
+        decimal GetMaxMileage(int vehicleId);
+        decimal GetMaxMileage(VehicleRecords vehicleRecords);
+        decimal GetMinMileage(int vehicleId);
+        decimal GetMinMileage(VehicleRecords vehicleRecords);
         int GetOwnershipDays(string purchaseDate, string soldDate, int year, List<ServiceRecord> serviceRecords, List<CollisionRecord> repairRecords, List<GasRecord> gasRecords, List<UpgradeRecord> upgradeRecords, List<OdometerRecord> odometerRecords, List<TaxRecord> taxRecords);
-        bool GetVehicleHasUrgentOrPastDueReminders(int vehicleId, int currentMileage);
+        bool GetVehicleHasUrgentOrPastDueReminders(int vehicleId, decimal currentMileage);
         List<VehicleInfo> GetVehicleInfo(List<Vehicle> vehicles);
         List<ReminderRecordViewModel> GetReminders(List<Vehicle> vehicles, bool isCalendar);
         List<PlanRecord> GetPlans(List<Vehicle> vehicles, bool excludeDone);
@@ -84,9 +84,9 @@ namespace CarCareTracker.Logic
             var gasRecordSum = vehicleRecords.GasRecords.Sum(x => x.Cost);
             return serviceRecordSum + repairRecordSum + upgradeRecordSum + taxRecordSum + gasRecordSum;
         }
-        public int GetMaxMileage(int vehicleId)
+        public decimal GetMaxMileage(int vehicleId)
         {
-            var numbersArray = new List<int>();
+            var numbersArray = new List<decimal>();
             var serviceRecords = _serviceRecordDataAccess.GetServiceRecordsByVehicleId(vehicleId);
             if (serviceRecords.Any())
             {
@@ -114,9 +114,9 @@ namespace CarCareTracker.Logic
             }
             return numbersArray.Any() ? numbersArray.Max() : 0;
         }
-        public int GetMaxMileage(VehicleRecords vehicleRecords)
+        public decimal GetMaxMileage(VehicleRecords vehicleRecords)
         {
-            var numbersArray = new List<int>();
+            var numbersArray = new List<decimal>();
             if (vehicleRecords.ServiceRecords.Any())
             {
                 numbersArray.Add(vehicleRecords.ServiceRecords.Max(x => x.Mileage));
@@ -139,9 +139,9 @@ namespace CarCareTracker.Logic
             }
             return numbersArray.Any() ? numbersArray.Max() : 0;
         }
-        public int GetMinMileage(int vehicleId)
+        public decimal GetMinMileage(int vehicleId)
         {
-            var numbersArray = new List<int>();
+            var numbersArray = new List<decimal>();
             var serviceRecords = _serviceRecordDataAccess.GetServiceRecordsByVehicleId(vehicleId).Where(x => x.Mileage != default);
             if (serviceRecords.Any())
             {
@@ -169,9 +169,9 @@ namespace CarCareTracker.Logic
             }
             return numbersArray.Any() ? numbersArray.Min() : 0;
         }
-        public int GetMinMileage(VehicleRecords vehicleRecords)
+        public decimal GetMinMileage(VehicleRecords vehicleRecords)
         {
-            var numbersArray = new List<int>();
+            var numbersArray = new List<decimal>();
             var _serviceRecords = vehicleRecords.ServiceRecords.Where(x => x.Mileage != default).ToList();
             if (_serviceRecords.Any())
             {
@@ -253,7 +253,7 @@ namespace CarCareTracker.Logic
                 return 1;
             }
         }
-        public bool GetVehicleHasUrgentOrPastDueReminders(int vehicleId, int currentMileage)
+        public bool GetVehicleHasUrgentOrPastDueReminders(int vehicleId, decimal currentMileage)
         {
             var reminders = _reminderRecordDataAccess.GetReminderRecordsByVehicleId(vehicleId);
             var results = _reminderHelper.GetReminderRecordViewModels(reminders, currentMileage, DateTime.Now);

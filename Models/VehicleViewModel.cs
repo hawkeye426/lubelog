@@ -18,7 +18,7 @@
         public string VehicleIdentifier { get; set; } = "LicensePlate";
         //Dashboard Metric Attributes
         public List<DashboardMetric> DashboardMetrics { get; set; } = new List<DashboardMetric>();
-        public int LastReportedMileage { get; set; }
+        public decimal LastReportedMileage { get; set; }
         public bool HasReminders { get; set; } = false;
         public decimal CostPerMile { get; set; }
         public decimal TotalCost { get; set; }

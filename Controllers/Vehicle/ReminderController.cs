@@ -75,7 +75,7 @@ namespace CarCareTracker.Controllers
             var result = PushbackRecurringReminderRecordWithChecks(reminderRecordId, null, null);
             return Json(result);
         }
-        private bool PushbackRecurringReminderRecordWithChecks(int reminderRecordId, DateTime? currentDate, int? currentMileage)
+        private bool PushbackRecurringReminderRecordWithChecks(int reminderRecordId, DateTime? currentDate, decimal? currentMileage)
         {
             try
             {

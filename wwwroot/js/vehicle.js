@@ -515,7 +515,7 @@ function GetAdjustedOdometer(id, odometerInput) {
         return odometerInput;
     }
     //apply odometer adjustments first.
-    var adjustedOdometer = parseInt(odometerInput) + parseInt(GetVehicleId().odometerDifference);
+    var adjustedOdometer = globalParseFloat(odometerInput) + globalParseFloat(GetVehicleId().odometerDifference);
     //apply odometer multiplier.
     adjustedOdometer *= globalParseFloat(GetVehicleId().odometerMultiplier);
     return adjustedOdometer.toFixed(0);
